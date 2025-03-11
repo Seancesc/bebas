@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from mycode import gen_pass
+import random, os
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -34,7 +35,7 @@ async def pangkatkan(ctx):
     await ctx.send(angka**2)
 
 @bot.command()
-async def help(ctx):
+async def help_me(ctx):
     list_command = {
         '$hello : untuk menyapa bot',
         '$generate_password : untuk membantu kamu membuat password',
@@ -46,5 +47,25 @@ async def help(ctx):
     for i in list_command.keys:
         await ctx.send(f'{i} : {list_command[i]}')
 
+@bot.command()
+async def send_meme(ctx):
+    folder = os.listdir('gambar_meme')
+    img = random.choice(folder)
+    direktori = f'gambar_meme/{img}'
+    with open(direktori, 'rb') as f:
+        picture = discord.File(f)
 
-bot.run("Masukan TOKEN")
+    await ctx.send(file=picture)
+
+@bot.command()
+async def animals(ctx):
+    folder = os.listdir('gambar_animals')
+    img = random.choice(folder)
+    direktori = f'gambar_animals/{img}'
+    with open(direktori, 'rb') as f:
+        picture = discord.File(f)
+
+    await ctx.send(file=picture)
+
+
+bot.run("MASUKAN TOKEN")
