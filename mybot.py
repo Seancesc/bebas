@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from mycode import gen_pass
 import random, os
+import requests
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -67,5 +68,29 @@ async def animals(ctx):
 
     await ctx.send(file=picture)
 
+def get_duck_image_url():    
+    url = 'https://random-d.uk/api/random'
+    res = requests.get(url)
+    data = res.json()
+    return data['url']
+
+
+@bot.command('duck')
+async def duck(ctx):
+    '''Setelah kita memanggil perintah bebek (duck), program akan memanggil fungsi get_duck_image_url'''
+    image_url = get_duck_image_url()
+    await ctx.send(image_url)
+
+organik = ["daun","sayur","kulit pisang ambon"]
+anorganik = ['plastik', 'besi', 'kabel']
+
+@bot.command()
+async def pilih(ctx):
+    await ctx.send('Masukan sampah')
+    msg = await bot.wait_for("message")
+    if msg.content in organik:
+        await ctx.send("Masukan dalam organik")
+    elif msg.content in anorganik:
+        await ctx.send("Masukan dalam anorganik")
 
 bot.run("MASUKAN TOKEN")
